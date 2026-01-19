@@ -25,7 +25,7 @@ mysql_psql_data/
 .env.*.local
 
 # Docker
-.dockerignore
+# .dockerignore should be tracked, so it's not listed here
 
 # IDE
 .vscode/

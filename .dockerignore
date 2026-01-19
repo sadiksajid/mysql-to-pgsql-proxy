@@ -1,0 +1,86 @@
+# Rust build artifacts
+/target/
+**/*.rs.bk
+*.pdb
+
+# Data and databases
+mysql_psql_data/
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# GitHub
+.github/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.iml
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Test files
+test_*.sql
+test_*.rs
+test_*.sh
+*_test.go
+*.test
+
+# Scripts
+*.sh
+!docker-entrypoint.sh
+
+# OS files
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+test_output/
+
+# Coverage and profiling
+*.profraw
+*.profdata
+coverage/
+lcov.info
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Example files
+example_*.txt
+FEATURE_SUMMARY.txt
+

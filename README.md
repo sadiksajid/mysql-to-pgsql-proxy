@@ -1,6 +1,13 @@
 # MySQL to PostgreSQL Sync Proxy
 
+[![Docker Hub](https://img.shields.io/docker/v/sadiksajid/mysql-to-pgsql-proxy?label=Docker%20Hub&logo=docker)](https://hub.docker.com/r/sadiksajid/mysql-to-pgsql-proxy)
+[![Docker Pulls](https://img.shields.io/docker/pulls/sadiksajid/mysql-to-pgsql-proxy?logo=docker)](https://hub.docker.com/r/sadiksajid/mysql-to-pgsql-proxy)
+[![GitHub Container Registry](https://img.shields.io/badge/ghcr.io-latest-blue?logo=github)](https://github.com/users/YOUR_USERNAME/packages)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 A powerful, real-time database synchronization tool that migrates and continuously syncs data from MySQL to PostgreSQL. Built with Rust for high performance and reliability.
+
+**🎉 Now available on Docker Hub:** `docker pull sadiksajid/mysql-to-pgsql-proxy:latest`
 
 ## 🚀 Features
 
@@ -56,6 +63,47 @@ A powerful, real-time database synchronization tool that migrates and continuous
 
 ### Using Docker (Recommended)
 
+<details open>
+<summary><b>📦 Pull from Docker Hub</b></summary>
+
+```bash
+# Pull the latest image
+docker pull sadiksajid/mysql-to-pgsql-proxy:latest
+
+# Run the container
+docker run -d \
+  --name mysql-psql-proxy \
+  -p 5009:5009 \
+  -v $(pwd)/data:/app/data \
+  sadiksajid/mysql-to-pgsql-proxy:latest --web-ui
+```
+
+Access the Web UI at http://localhost:5009
+
+</details>
+
+<details>
+<summary><b>🐙 Pull from GitHub Container Registry</b></summary>
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/YOUR_USERNAME/mysql-to-psql-proxy:latest
+
+# Run the container
+docker run -d \
+  --name mysql-psql-proxy \
+  -p 5009:5009 \
+  -v $(pwd)/data:/app/data \
+  ghcr.io/YOUR_USERNAME/mysql-to-psql-proxy:latest --web-ui
+```
+
+Access the Web UI at http://localhost:5009
+
+</details>
+
+<details>
+<summary><b>🛠️ Build from Source</b></summary>
+
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
@@ -69,11 +117,39 @@ cd "mysql to psql proxy"
 
 The Web UI will be available at http://localhost:5009
 
+</details>
+
 ### Using Docker Compose
 
+<details>
+<summary><b>📋 Docker Compose Configuration</b></summary>
+
+Create or update your `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+
+services:
+  mysql-psql-sync:
+    image: sadiksajid/mysql-to-pgsql-proxy:latest
+    # Or use GitHub Container Registry:
+    # image: ghcr.io/YOUR_USERNAME/mysql-to-psql-proxy:latest
+    ports:
+      - "5009:5009"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - RUST_LOG=info
+    command: --web-ui
+    restart: unless-stopped
+```
+
+Run:
 ```bash
 docker-compose up -d
 ```
+
+</details>
 
 ### From Source
 
@@ -271,19 +347,67 @@ The tool tracks every operation and provides:
 
 ## 🐳 Docker Deployment
 
-### Using Docker Compose
+### Pre-built Images
+
+Docker images are automatically built and published to two registries:
+
+| Registry | Image Name | Command |
+|----------|-----------|---------|
+| 🐳 **Docker Hub** | `sadiksajid/mysql-to-pgsql-proxy` | `docker pull sadiksajid/mysql-to-pgsql-proxy:latest` |
+| 🐙 **GitHub Container Registry** | `ghcr.io/YOUR_USERNAME/mysql-to-psql-proxy` | `docker pull ghcr.io/YOUR_USERNAME/mysql-to-psql-proxy:latest` |
+
+**Available Tags:**
+- `latest` - Latest stable build from master branch
+- `v0.0.X` - Specific version tags (auto-incremented on each release)
+- `master-<sha>` - Build from specific commit
+
+**Multi-Platform Support:**
+- ✅ `linux/amd64` (Intel/AMD processors)
+- ✅ `linux/arm64` (ARM processors, Apple Silicon M1/M2)
+
+### Quick Start with Docker
+
+<details open>
+<summary><b>🚀 Docker Run</b></summary>
+
+```bash
+# Using Docker Hub
+docker run -d \
+  --name mysql-psql-proxy \
+  -p 5009:5009 \
+  -v $(pwd)/data:/app/data \
+  -e RUST_LOG=info \
+  sadiksajid/mysql-to-pgsql-proxy:latest --web-ui
+
+# Or using GitHub Container Registry
+docker run -d \
+  --name mysql-psql-proxy \
+  -p 5009:5009 \
+  -v $(pwd)/data:/app/data \
+  -e RUST_LOG=info \
+  ghcr.io/YOUR_USERNAME/mysql-to-psql-proxy:latest --web-ui
+```
+
+</details>
+
+<details>
+<summary><b>📋 Docker Compose</b></summary>
 
 Create `docker-compose.yml`:
+
 ```yaml
 version: '3.8'
 
 services:
   mysql-psql-sync:
-    image: mysql_psql_proxy:latest
+    image: sadiksajid/mysql-to-pgsql-proxy:latest
+    # Alternative: Use GitHub Container Registry
+    # image: ghcr.io/YOUR_USERNAME/mysql-to-psql-proxy:latest
+    container_name: mysql-psql-proxy
     ports:
       - "5009:5009"
     volumes:
-      - ./mysql_psql_data:/app/data
+      - ./data:/app/data
     environment:
       - RUST_LOG=info
     command: --web-ui
@@ -295,23 +419,54 @@ Run:
 docker-compose up -d
 ```
 
-### Using Docker Run
-
+View logs:
 ```bash
-docker run -d \
-  -p 5009:5009 \
-  -v $(pwd)/mysql_psql_data:/app/data \
-  -e RUST_LOG=info \
-  --name mysql_psql_ui \
-  mysql_psql_proxy:latest --web-ui
+docker-compose logs -f
 ```
 
+Stop:
+```bash
+docker-compose down
+```
+
+</details>
+
+<details>
+<summary><b>🔄 Update to Latest Version</b></summary>
+
+```bash
+# Pull latest image
+docker pull sadiksajid/mysql-to-pgsql-proxy:latest
+
+# Stop and remove old container
+docker stop mysql-psql-proxy
+docker rm mysql-psql-proxy
+
+# Start with new image
+docker run -d \
+  --name mysql-psql-proxy \
+  -p 5009:5009 \
+  -v $(pwd)/data:/app/data \
+  sadiksajid/mysql-to-pgsql-proxy:latest --web-ui
+```
+
+Or with Docker Compose:
+```bash
+docker-compose pull
+docker-compose up -d
+```
+
+</details>
+
 ### Volume Persistence
+
 The `/app/data` volume contains:
-- `config.db`: SQLite database with all settings
-- User credentials and sessions
-- Operation statistics
-- Configuration history
+- `config.db` - SQLite database with all settings
+- User credentials and sessions (encrypted)
+- Operation statistics and history
+- Configuration backups
+
+**Important:** Always mount this volume to persist your configuration between container restarts.
 
 ## 🛠️ Troubleshooting
 
@@ -445,6 +600,22 @@ Built with:
 
 ---
 
+## 🚀 CI/CD & Releases
+
+This project uses automated CI/CD pipelines:
+
+- **Automatic Builds**: Every push to `master` triggers a new Docker build
+- **Multi-Platform**: Images built for `amd64` and `arm64` architectures  
+- **Auto-Versioning**: Semantic versioning with auto-incremented tags (v0.0.1, v0.0.2, etc.)
+- **Dual Registry**: Published to both Docker Hub and GitHub Container Registry
+- **GitHub Releases**: Automatic release notes with pull commands
+
+### Latest Release
+
+Check the [Releases](../../releases) page for the latest version and changelog.
+
+---
+
 **Version**: 1.0.0  
-**Author**: [Your Name]  
-**Last Updated**: December 2025
+**Last Updated**: January 2026  
+**Docker Images**: [Docker Hub](https://hub.docker.com/r/sadiksajid/mysql-to-pgsql-proxy) | [GHCR](https://github.com/users/YOUR_USERNAME/packages)

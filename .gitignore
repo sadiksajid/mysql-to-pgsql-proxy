@@ -4,7 +4,8 @@
 *.pdb
 
 # Cargo
-Cargo.lock
+# Cargo.lock should be committed for binary projects (not libraries)
+# See: https://doc.rust-lang.org/cargo/faq.html#why-do-binaries-have-cargolock-in-version-control-but-not-libraries
 
 # Build artifacts
 /debug/
